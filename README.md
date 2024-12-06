@@ -1,1 +1,2 @@
-# A CRM Itenary API
+# Itenary API
+## A CRM itenary API
