@@ -68,27 +68,24 @@ DATABASES = {
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-REST_KNOX = {
-    "SECURE_HASH_ALGORITHM": "cryptography.hazmat.primitives.hashes.SHA512",
-    "AUTH_TOKEN_CHARACTER_LENGTH": 128,
-    "TOKEN_TTL": timedelta(days=5),
-    "USER_SERIALIZER": "knox.serializers.UserSerializer",
-    "TOKEN_LIMIT_PER_USER": 1,
-    "AUTO_REFRESH": True,
-    # 'EXPIRY_DATETIME_FORMAT': api_settings.DATETME_FORMAT,
-}
-
 # REST FRAMEWORK DEV SETTINGS
 REST_FRAMEWORK.update(
     {
         "DEFAULT_AUTHENTICATION_CLASSES": (
-            "services.authservice.backends.OAuth2ClientCredentialAuthentication",
-            "knox.auth.TokenAuthentication",
+            "rest_framework_simplejwt.authentication.JWTAuthentication"
         ),
         "TEST_REQUEST_DEFAULT_FORMAT": "json",
         "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.NamespaceVersioning"
     }
 )
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "AUTH_HEADER_TYPES": ("Bearer",),
+}
 
 REST_FRAMEWORK = {"EXCEPTION_HANDLER": "api.exceptions.handler.exception_handler"}
 
@@ -111,7 +108,7 @@ STATIC_URL = "static/"
 
 CACHES = {
     # "default": {
-    #     "BACKEND": "django.core.cache.backends.redis.RedisCache",
+    #     "BACKEND": "django.c33ore.cache.backends.redis.RedisCache",
     #     "LOCATION": getvar("REDIS_URI"),
     #     # "OPTIONS": {"ssl_cert_reqs": None},
     # },

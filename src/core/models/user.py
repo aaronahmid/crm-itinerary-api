@@ -48,6 +48,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     """
     Custom user model where email is the unique identifier.
     """
+    USER_TYPES = [
+        ("CUSTOMER", "Customer"),
+        ("STAFF", "Staff")
+    ]
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     email = models.EmailField(_("email address"), unique=True)
     first_name = models.CharField(_("first name"), max_length=50, blank=True)
@@ -59,6 +63,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_login = models.DateTimeField(
         _("last login"), blank=True, null=True
     )  # Inherited from AbstractBaseUser
+    user_type = models.CharField(max_length=8, choices=USER_TYPES, default=USER_TYPES[0][0])
 
     objects = CustomUserManager()
 
