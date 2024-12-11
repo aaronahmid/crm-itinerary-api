@@ -23,7 +23,12 @@ ALLOWED_HOSTS = ["*"]
 # NOT ALL LIBRARIES
 # HERE MIGHT MAKE IT TO
 # STAGING OR PRODUCTION
-DEV_APPS = ["knox", "drf_yasg", "coreapi", "drf_standardized_errors",]
+DEV_APPS = [
+    "knox",
+    "drf_yasg",
+    "coreapi",
+    "drf_standardized_errors",
+]
 
 INSTALLED_APPS.extend(DEV_APPS)
 
@@ -68,27 +73,23 @@ DATABASES = {
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-REST_KNOX = {
-    "SECURE_HASH_ALGORITHM": "cryptography.hazmat.primitives.hashes.SHA512",
-    "AUTH_TOKEN_CHARACTER_LENGTH": 128,
-    "TOKEN_TTL": timedelta(days=5),
-    "USER_SERIALIZER": "knox.serializers.UserSerializer",
-    "TOKEN_LIMIT_PER_USER": 1,
-    "AUTO_REFRESH": True,
-    # 'EXPIRY_DATETIME_FORMAT': api_settings.DATETME_FORMAT,
-}
-
 # REST FRAMEWORK DEV SETTINGS
 REST_FRAMEWORK.update(
     {
-        "DEFAULT_AUTHENTICATION_CLASSES": (
-            "services.authservice.backends.OAuth2ClientCredentialAuthentication",
-            "knox.auth.TokenAuthentication",
-        ),
         "TEST_REQUEST_DEFAULT_FORMAT": "json",
-        "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.NamespaceVersioning"
+        "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.NamespaceVersioning",
     }
 )
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": "your-secret-key",
+    "AUTH_HEADER_TYPES": ("Bearer",),
+}
 
 REST_FRAMEWORK = {"EXCEPTION_HANDLER": "api.exceptions.handler.exception_handler"}
 
@@ -111,7 +112,7 @@ STATIC_URL = "static/"
 
 CACHES = {
     # "default": {
-    #     "BACKEND": "django.core.cache.backends.redis.RedisCache",
+    #     "BACKEND": "django.c33ore.cache.backends.redis.RedisCache",
     #     "LOCATION": getvar("REDIS_URI"),
     #     # "OPTIONS": {"ssl_cert_reqs": None},
     # },
@@ -138,6 +139,9 @@ EMAIL_HOST_PASSWORD = getvar("EMAIL_HOST_PASSWORD")
 CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = "None"
 
-TRUSTED_ORIGINS = ["http://127.0.0.1:8000", "https://booking-api-dev.aajexpress.org"]
+TRUSTED_ORIGINS = ["http://127.0.0.1:8000"]
 
 CSRF_TRUSTED_ORIGINS = TRUSTED_ORIGINS
+
+STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
