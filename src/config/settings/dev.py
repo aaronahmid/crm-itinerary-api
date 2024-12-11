@@ -23,7 +23,12 @@ ALLOWED_HOSTS = ["*"]
 # NOT ALL LIBRARIES
 # HERE MIGHT MAKE IT TO
 # STAGING OR PRODUCTION
-DEV_APPS = ["knox", "drf_yasg", "coreapi", "drf_standardized_errors",]
+DEV_APPS = [
+    "knox",
+    "drf_yasg",
+    "coreapi",
+    "drf_standardized_errors",
+]
 
 INSTALLED_APPS.extend(DEV_APPS)
 
@@ -71,11 +76,8 @@ CORS_ORIGIN_ALLOW_ALL = True
 # REST FRAMEWORK DEV SETTINGS
 REST_FRAMEWORK.update(
     {
-        "DEFAULT_AUTHENTICATION_CLASSES": (
-            "rest_framework_simplejwt.authentication.JWTAuthentication"
-        ),
         "TEST_REQUEST_DEFAULT_FORMAT": "json",
-        "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.NamespaceVersioning"
+        "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.NamespaceVersioning",
     }
 )
 
@@ -84,6 +86,8 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": "your-secret-key",
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
@@ -135,6 +139,9 @@ EMAIL_HOST_PASSWORD = getvar("EMAIL_HOST_PASSWORD")
 CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = "None"
 
-TRUSTED_ORIGINS = ["http://127.0.0.1:8000", "https://booking-api-dev.aajexpress.org"]
+TRUSTED_ORIGINS = ["http://127.0.0.1:8000"]
 
 CSRF_TRUSTED_ORIGINS = TRUSTED_ORIGINS
+
+STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")

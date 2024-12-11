@@ -1,7 +1,7 @@
 from ..auth.serializers import UserSerializer
 
 from rest_framework import serializers
-from src.core.models import Customer
+from core.models import Customer
 
 
 class CustomerSerializer(serializers.ModelSerializer):
@@ -16,9 +16,9 @@ class CustomerSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'user',
-            'phone_number',
+            'phone',
             'address',
-            'date_of_birth',
+            'birthday',
             'created_at'
             )
         read_only_fields = ["id", "created_at", "updated_at", "user"]

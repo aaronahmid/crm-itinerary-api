@@ -1,11 +1,7 @@
 from django.urls import path, include
-from .auth.endpoints.login import LoginView
-
-
-endpoints = [
-    path("auth/login/", LoginView.as_view(), name="login"),
-]
 
 urlpatterns = [
-    path("v1/", include(endpoints, "v1"))
+    path("auth/", include("api.v1.auth.urls")),
+    path("itineraries/", include("api.v1.itineraries.urls")),
+    path("customers/", include("api.v1.customers.urls")),
 ]

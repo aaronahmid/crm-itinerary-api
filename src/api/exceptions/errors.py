@@ -54,7 +54,7 @@ class UserInactive(APIException):
 class InvalidCredentials(APIException):
     status_code = 400
     default_detail = "invalid email or password"
-    default_code = "USER.INACTIVE"
+    default_code = "CREDENTIALS.INVALID"
 
     def __init__(self, detail=None, code=None):
         detail = detail if detail is not None else self.default_detail

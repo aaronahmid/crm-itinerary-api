@@ -6,18 +6,17 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework import permissions
 
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
 
 class UserViewSet(viewsets.ViewSet):
     """
     ViewSet for managing users.
     """
-
+    authentication_classes = [JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = UserSerializer
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.user_service = UserService
+    user_service = UserService
 
     def create(self, request):
         """
@@ -56,8 +55,9 @@ class UserViewSet(viewsets.ViewSet):
         """
         List all users.
         """
-        users = self.user_service.list_users
-        serializer = self.user_service(users, many=True)
+        users = self.user_service.list_users()
+        print(users)
+        serializer = self.serializer_class(users, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=["post"])

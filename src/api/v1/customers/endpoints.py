@@ -1,22 +1,23 @@
-from .serializers import UserSerializer
-from .service import CustomerSerializer, CustomerService
+from .serializers import CustomerSerializer
+from .service import CustomerService
 
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework import permissions
 
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
-class UserViewSet(viewsets.ViewSet):
+
+class CustomerViewSet(viewsets.ViewSet):
     """
     ViewSet for managing customers.
     """
 
+    authentication_classes = [JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = CustomerSerializer
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.service = CustomerService
+    service = CustomerService
 
     def create(self, request):
         """
@@ -24,7 +25,7 @@ class UserViewSet(viewsets.ViewSet):
         """
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = self.service.create_customer(**serializer.validated_data)
+        user = self.service.create_customer(serializer.validated_data)
         return Response(
             self.serializer_class(user).data, status=status.HTTP_201_CREATED
         )
@@ -58,6 +59,6 @@ class UserViewSet(viewsets.ViewSet):
         """
         List all customers.
         """
-        users = self.service.list_customers
+        users = self.service.list_customers()
         serializer = self.serializer_class(users, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

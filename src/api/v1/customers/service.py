@@ -4,7 +4,7 @@ from ...exceptions.errors import (
     ObjectAlreadyExistError,
     ResourceNotFound
 )
-from src.core.models import Customer
+from core.models import Customer
 
 
 class CustomerService:
@@ -14,18 +14,18 @@ class CustomerService:
 
     @staticmethod
     @transaction.atomic
-    def create_customer(**kwargs):
+    def create_customer(data):
         """
         Create a new customer.
 
         Args:
-            kwargs (dict): Data to create a customer.
+            data (dict): Data to create a customer.
 
         Returns:
             Customer: The created customer instance.
         """
         try:
-            customer = Customer.objects.create(**kwargs)
+            customer = Customer.objects.create(**data)
         except IntegrityError:
             raise ObjectAlreadyExistError("customer already exists")
         return customer

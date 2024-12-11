@@ -25,6 +25,8 @@ class CustomUserManager(BaseUserManager):
         email = self.normalize_email(email)
         extra_fields.setdefault("is_active", True)
         user = self.model(email=email, **extra_fields)
+
+        print(password)
         user.set_password(password)
         user.save(using=self._db)
         return user

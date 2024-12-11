@@ -1,13 +1,12 @@
 from django.db import transaction
 from django.db import IntegrityError
 from django.utils.timezone import now
-from src.core.models import User
+from core.models import User, Customer
 from ...exceptions.errors import (
     ObjectAlreadyExistError,
     ResourceNotFound,
     CustomAPIError
 )
-from src.core.models import Customer
 
 
 class UserService:
@@ -32,12 +31,14 @@ class UserService:
             CustomAPIError
         """
         try:
+            print(password)
             user = User.objects.create_user(
                     email=email,
                     first_name=first_name,
                     last_name=last_name,
                     password=password,
                 )
+
             if user_type == "CUSTOMER":
                 Customer.objects.create(
                     user=user, first_name=first_name, last_name=last_name
@@ -47,8 +48,8 @@ class UserService:
                 user.save()
 
             return user
-        except IntegrityError:
-            raise ObjectAlreadyExistError("User already exists")
+        except IntegrityError as error:
+            raise ObjectAlreadyExistError(str(error))
         except Exception as error:
             raise CustomAPIError(str(error))
 

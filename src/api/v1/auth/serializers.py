@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """login serializer"""
 from rest_framework import serializers
-from src.core.models import User
+from core.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -22,6 +22,8 @@ class UserSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
             "last_login",
+            "password",
+            "user_type"
         ]
         read_only_fields = [
             "id",
@@ -31,3 +33,6 @@ class UserSerializer(serializers.ModelSerializer):
             "updated_at",
             "last_login",
         ]
+        extra_kwargs = {
+            "password": {"write_only": True},
+        }
