@@ -17,8 +17,6 @@ TOKEN_EXPIRE_AT = 60
 
 ALLOWED_HOSTS = ["*"]
 
-# CSRF_TRUSTED_ORIGINS = ["https://booking-api-dev.aajexpress.org"]
-
 # DEV APPS
 # NOT ALL LIBRARIES
 # HERE MIGHT MAKE IT TO
