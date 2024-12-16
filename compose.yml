@@ -7,7 +7,7 @@ services:
       - "5555:5555"
     environment:
       - DJANGO_SETTINGS_MODULE=config.settings
-      - DATABASE_URL=postgres://postgres:postgres@db:5432/trusted_routes_db
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/db_name
       - REDIS_URL=redis://redis:6379/0
       - ENV=dev
       - DEBUG=True
@@ -37,7 +37,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: trusted_routes_db
+      POSTGRES_DB: db_name
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
