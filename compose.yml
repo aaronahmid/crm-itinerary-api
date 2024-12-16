@@ -1,5 +1,6 @@
 services:
   django:
+    image: trusted-routes-django
     build: .
     command: gunicorn config.wsgi:application --bind 0.0.0.0:5555 --workers 3
     ports:
@@ -9,11 +10,18 @@ services:
       - DATABASE_URL=postgres://postgres:postgres@db:5432/trusted_routes_db
       - REDIS_URL=redis://redis:6379/0
       - ENV=dev
-    env_file:
-      - src/config/envs/.env.dev
+      - DEBUG=True
     depends_on:
       - db
       - redis
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 20s
+        order: start-first
 
   redis:
     image: redis:6
